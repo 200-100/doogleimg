@@ -21,11 +21,20 @@ class FileController extends Controller
      */
     public function index()
     {
+
+
+
+          /*recupera todos los registros de la table files, pero hacer la consulta segun el tipo de usuario*/
+          $files = File::where('user_id',auth()->user()->id)->paginate(30);
+
+
         /*Recupera la vista que se encuetra dentro de admin*/
+        return view('admin.files.index',compact('files'));
+
+      
 
 
-        return view('admin.files.index');
-
+      
 
     }
 
@@ -130,8 +139,16 @@ class FileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($file)
+    public function destroy(FILE $file)
     {
-        //
+        
+
+         $url = str_replace('storage', 'public', $file->url);
+         Storage::delete($url);
+
+
+         $file->delete();
+
+         return redirect()->route('admin.files.index')->with('eliminar', 'ok');
     }
 }

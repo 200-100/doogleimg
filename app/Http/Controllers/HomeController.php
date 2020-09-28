@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\File;
+
 class HomeController extends Controller
 {
     /**
@@ -11,10 +13,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    /*public function __construct()
     {
         $this->middleware('auth');
-    }
+    }*/
 
     /**
      * Show the application dashboard.
@@ -23,6 +25,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('admin.home');
+        // En esta variable almaceno todos los registros de la BD. lo cambio por paginate(), para hacer secciones
+        $files = File::paginate(5);
+
+
+        return view('welcome', compact('files'));
     }
 }
